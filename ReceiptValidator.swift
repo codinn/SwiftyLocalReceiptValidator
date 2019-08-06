@@ -36,8 +36,8 @@ import Foundation
 import StoreKit
 #if os(macOS)
 import IOKit
-import OpenSSL
 #endif
+import OpenSSL
 
 // MARK: Output
 enum ReceiptValidationResult {
