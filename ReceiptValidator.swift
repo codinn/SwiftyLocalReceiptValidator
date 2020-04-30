@@ -236,6 +236,7 @@ struct ReceiptExtractor {
 }
 
 struct ReceiptSignatureValidator {
+    
     func checkSignaturePresence(_ PKCS7Container: UnsafeMutablePointer<PKCS7>) throws {
         let pkcs7SignedTypeCode = OBJ_obj2nid(PKCS7Container.pointee.type)
         
@@ -245,12 +246,10 @@ struct ReceiptSignatureValidator {
     }
     
     func checkSignatureAuthenticity(_ PKCS7Container: UnsafeMutablePointer<PKCS7>) throws {
-        let appleRootCertificateX509 = try loadAppleRootCertificate()
-        
-        try verifyAuthenticity(appleRootCertificateX509, PKCS7Container: PKCS7Container)
+        try checkAppleRootCertificateAuthenticity(PKCS7Container: PKCS7Container)
     }
     
-    fileprivate func loadAppleRootCertificate() throws -> UnsafeMutablePointer<X509> {
+    fileprivate func checkAppleRootCertificateAuthenticity(PKCS7Container: UnsafeMutablePointer<PKCS7>) throws {
         guard
             let appleRootCertificateURL = Bundle.main.url(forResource: "AppleIncRootCertificate", withExtension: "cer"),
             let appleRootCertificateData = try? Data(contentsOf: appleRootCertificateURL)
@@ -262,14 +261,10 @@ struct ReceiptSignatureValidator {
         BIO_write(appleRootCertificateBIO, (appleRootCertificateData as NSData).bytes, Int32(appleRootCertificateData.count))
         let appleRootCertificateX509 = d2i_X509_bio(appleRootCertificateBIO, nil)
         
-        return appleRootCertificateX509!
-    }
-    
-    fileprivate func verifyAuthenticity(_ x509Certificate: UnsafeMutablePointer<X509>, PKCS7Container: UnsafeMutablePointer<PKCS7>) throws {
         let x509CertificateStore = X509_STORE_new()
-        X509_STORE_add_cert(x509CertificateStore, x509Certificate)
+        X509_STORE_add_cert(x509CertificateStore, appleRootCertificateX509)
         
-        OpenSSL_add_all_digests()
+        OPENSSL_init_crypto(UInt64(OPENSSL_INIT_ADD_ALL_DIGESTS), nil)
         
         let result = PKCS7_verify(PKCS7Container, nil, x509CertificateStore, nil, nil, 0)
         
@@ -277,6 +272,7 @@ struct ReceiptSignatureValidator {
             throw ReceiptValidationError.receiptSignatureInvalid
         }
     }
+    
 }
 
 struct ReceiptParser {
@@ -486,18 +482,7 @@ struct ReceiptParser {
     }
     
     func DecodeASN1Integer(startOfInt intPointer: inout UnsafePointer<UInt8>?, length: Int) -> Int? {
-        // These will be set by ASN1_get_object
-        var type = Int32(0)
-        var xclass = Int32(0)
-        var intLength = 0
-        
-        ASN1_get_object(&intPointer, &intLength, &type, &xclass, length)
-        
-        guard type == V_ASN1_INTEGER else {
-            return nil
-        }
-        
-        let integer = c2i_ASN1_INTEGER(nil, &intPointer, intLength)
+        let integer = d2i_ASN1_UINTEGER(nil, &intPointer, length)
         let result = ASN1_INTEGER_get(integer)
         ASN1_INTEGER_free(integer)
         
