@@ -38,6 +38,7 @@ import StoreKit
 import IOKit
 #endif
 import OpenSSL
+import pkcs7_union_accessors
 
 // MARK: Output
 enum ReceiptValidationResult {
