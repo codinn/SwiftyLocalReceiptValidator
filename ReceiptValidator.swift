@@ -82,6 +82,7 @@ struct ParsedInAppPurchaseReceipt {
 
 // MARK: Receipt Validator and supporting Types
 struct ReceiptValidator {
+    
     let receiptLoader = ReceiptLoader()
     let receiptExtractor = ReceiptExtractor()
     let receiptSignatureValidator = ReceiptSignatureValidator()
@@ -186,9 +187,11 @@ struct ReceiptValidator {
         // Compare the computed hash with the receipt's hash
         guard computedHashData.isEqual(to: receiptHashData as Data) else { throw ReceiptValidationError.incorrectHash }
     }
+    
 }
 
 struct ReceiptLoader {
+    
     let receiptUrl = Bundle.main.appStoreReceiptURL
     
     func loadReceipt() throws -> Data {
@@ -213,11 +216,17 @@ struct ReceiptLoader {
         
         return false
     }
+    
 }
 
 struct ReceiptExtractor {
+    
     func extractPKCS7Container(_ receiptData: Data) throws -> UnsafeMutablePointer<PKCS7> {
         let receiptBIO = BIO_new(BIO_s_mem())
+        defer {
+            BIO_free(receiptBIO)
+        }
+        
         BIO_write(receiptBIO, (receiptData as NSData).bytes, Int32(receiptData.count))
         let receiptPKCS7Container = d2i_PKCS7_bio(receiptBIO, nil)
         
@@ -233,6 +242,7 @@ struct ReceiptExtractor {
         
         return receiptPKCS7Container!
     }
+    
 }
 
 struct ReceiptSignatureValidator {
@@ -258,10 +268,18 @@ struct ReceiptSignatureValidator {
         }
         
         let appleRootCertificateBIO = BIO_new(BIO_s_mem())
+        defer {
+            BIO_free(appleRootCertificateBIO)
+        }
+        
         BIO_write(appleRootCertificateBIO, (appleRootCertificateData as NSData).bytes, Int32(appleRootCertificateData.count))
         let appleRootCertificateX509 = d2i_X509_bio(appleRootCertificateBIO, nil)
         
         let x509CertificateStore = X509_STORE_new()
+        defer {
+            X509_STORE_free(x509CertificateStore)
+        }
+        
         X509_STORE_add_cert(x509CertificateStore, appleRootCertificateX509)
         
         OPENSSL_init_crypto(UInt64(OPENSSL_INIT_ADD_ALL_DIGESTS), nil)
@@ -308,7 +326,6 @@ struct ReceiptParser {
         // Decode Payload
         // Step through payload (ASN1 Set) and parse each ASN1 Sequence within (ASN1 Sets contain one or more ASN1 Sequences)
         while currentASN1PayloadLocation! < endOfPayload {
-            
             // Get next ASN1 Sequence
             ASN1_get_object(&currentASN1PayloadLocation, &length, &type, &xclass, currentASN1PayloadLocation!.distance(to: endOfPayload))
             
@@ -407,7 +424,6 @@ struct ReceiptParser {
         // Decode Payload
         // Step through payload (ASN1 Set) and parse each ASN1 Sequence within (ASN1 Sets contain one or more ASN1 Sequences)
         while currentInAppPurchaseASN1PayloadLocation! < endOfPayload {
-            
             // Get next ASN1 Sequence
             ASN1_get_object(&currentInAppPurchaseASN1PayloadLocation, &length, &type, &xclass, currentInAppPurchaseASN1PayloadLocation!.distance(to: endOfPayload))
             
