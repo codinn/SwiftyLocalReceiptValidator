@@ -41,12 +41,12 @@ import OpenSSL
 import pkcs7_union_accessors
 
 // MARK: Output
-enum ReceiptValidationResult {
+public enum ReceiptValidationResult {
     case success(ParsedReceipt)
     case error(ReceiptValidationError)
 }
 
-enum ReceiptValidationError : Error {
+public enum ReceiptValidationError : Error {
     case couldNotFindReceipt
     case emptyReceiptContents
     case receiptNotSigned
@@ -57,7 +57,7 @@ enum ReceiptValidationError : Error {
     case incorrectHash
 }
 
-struct ParsedReceipt {
+public struct ParsedReceipt {
     let bundleIdentifier: String?
     let bundleIdData: NSData?
     let appVersion: String?
@@ -69,7 +69,7 @@ struct ParsedReceipt {
     let expirationDate: Date?
 }
 
-struct ParsedInAppPurchaseReceipt {
+public struct ParsedInAppPurchaseReceipt {
     let quantity: Int?
     let productIdentifier: String?
     let transactionIdentifier: String?
@@ -82,14 +82,14 @@ struct ParsedInAppPurchaseReceipt {
 }
 
 // MARK: Receipt Validator and supporting Types
-struct ReceiptValidator {
+public struct ReceiptValidator {
     
     let receiptLoader = ReceiptLoader()
     let receiptExtractor = ReceiptExtractor()
     let receiptSignatureValidator = ReceiptSignatureValidator()
     let receiptParser = ReceiptParser()
     
-    func validateReceipt() -> ReceiptValidationResult {
+    public func validateReceipt() -> ReceiptValidationResult {
         do {
             let receiptData = try receiptLoader.loadReceipt()
             let receiptContainer = try receiptExtractor.extractPKCS7Container(receiptData)
@@ -161,7 +161,7 @@ struct ReceiptValidator {
         #endif
     }
     
-    fileprivate func validateHash(receipt: ParsedReceipt) throws {
+    private func validateHash(receipt: ParsedReceipt) throws {
         // Make sure that the ParsedReceipt instances has non-nil values needed for hash comparison
         guard let receiptOpaqueValueData = receipt.opaqueValue else { throw ReceiptValidationError.incorrectHash }
         guard let receiptBundleIdData = receipt.bundleIdData else { throw ReceiptValidationError.incorrectHash }
