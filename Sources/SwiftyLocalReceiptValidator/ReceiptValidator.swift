@@ -58,27 +58,27 @@ public enum ReceiptValidationError : Error {
 }
 
 public struct ParsedReceipt {
-    let bundleIdentifier: String?
-    let bundleIdData: NSData?
-    let appVersion: String?
-    let opaqueValue: NSData?
-    let sha1Hash: NSData?
-    let inAppPurchaseReceipts: [ParsedInAppPurchaseReceipt]?
-    let originalAppVersion: String?
-    let receiptCreationDate: Date?
-    let expirationDate: Date?
+    public let bundleIdentifier: String?
+    public let bundleIdData: NSData?
+    public let appVersion: String?
+    public let opaqueValue: NSData?
+    public let sha1Hash: NSData?
+    public let inAppPurchaseReceipts: [ParsedInAppPurchaseReceipt]?
+    public let originalAppVersion: String?
+    public let receiptCreationDate: Date?
+    public let expirationDate: Date?
 }
 
 public struct ParsedInAppPurchaseReceipt {
-    let quantity: Int?
-    let productIdentifier: String?
-    let transactionIdentifier: String?
-    let originalTransactionIdentifier: String?
-    let purchaseDate: Date?
-    let originalPurchaseDate: Date?
-    let subscriptionExpirationDate: Date?
-    let cancellationDate: Date?
-    let webOrderLineItemId: Int?
+    public let quantity: Int?
+    public let productIdentifier: String?
+    public let transactionIdentifier: String?
+    public let originalTransactionIdentifier: String?
+    public let purchaseDate: Date?
+    public let originalPurchaseDate: Date?
+    public let subscriptionExpirationDate: Date?
+    public let cancellationDate: Date?
+    public let webOrderLineItemId: Int?
 }
 
 // MARK: Receipt Validator and supporting Types
@@ -88,6 +88,8 @@ public struct ReceiptValidator {
     let receiptExtractor = ReceiptExtractor()
     let receiptSignatureValidator = ReceiptSignatureValidator()
     let receiptParser = ReceiptParser()
+
+    public init() {}
     
     public func validateReceipt() -> ReceiptValidationResult {
         do {
