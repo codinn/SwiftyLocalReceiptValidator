@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "OpenSSL",
+        "repositoryURL": "https://github.com/codinn/OpenSSL.git",
+        "state": {
+          "branch": "master",
+          "revision": "102c679758a315b0ebcba57ad10982060c569ccb",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
