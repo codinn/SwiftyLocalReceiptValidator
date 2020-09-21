@@ -3,12 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		2F2CB0CF2515E03E0030844D /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* pkcs7_union_accessors.c */; };
-		2F2CB0E12515FFF90030844D /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 2F2CB0E02515FFF90030844D /* OpenSSL */; };
+		2F2CB0E12515FFF90030844D /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 2F2CB0E02515FFF90030844D /* OpenSSL */; settings = {ATTRIBUTES = (Required, ); }; };
 		OBJ_27 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* ReceiptValidator.swift */; };
 /* End PBXBuildFile section */
 
@@ -112,6 +112,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2FAFD5B525184AE100591EBD /* PBXTargetDependency */,
 			);
 			name = SwiftyLocalReceiptValidator;
 			packageProductDependencies = (
@@ -131,7 +132,7 @@
 				LastUpgradeCheck = 9999;
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "SwiftyLocalReceiptValidator" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -161,6 +162,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2FAFD5B525184AE100591EBD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 2FAFD5B425184AE100591EBD /* OpenSSL */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		OBJ_24 /* Debug */ = {
@@ -335,6 +343,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		2F2CB0E02515FFF90030844D /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2F2CB0DF2515FFF90030844D /* XCRemoteSwiftPackageReference "OpenSSL" */;
+			productName = OpenSSL;
+		};
+		2FAFD5B425184AE100591EBD /* OpenSSL */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2F2CB0DF2515FFF90030844D /* XCRemoteSwiftPackageReference "OpenSSL" */;
 			productName = OpenSSL;
