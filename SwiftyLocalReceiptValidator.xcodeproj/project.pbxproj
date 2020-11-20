@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2F2CB0CF2515E03E0030844D /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* pkcs7_union_accessors.c */; };
-		2F2CB0E12515FFF90030844D /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 2F2CB0E02515FFF90030844D /* OpenSSL */; settings = {ATTRIBUTES = (Required, ); }; };
 		OBJ_27 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* ReceiptValidator.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				2F2CB0E12515FFF90030844D /* OpenSSL in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,7 +114,6 @@
 			);
 			name = SwiftyLocalReceiptValidator;
 			packageProductDependencies = (
-				2F2CB0E02515FFF90030844D /* OpenSSL */,
 			);
 			productName = SwiftyLocalReceiptValidator;
 			productReference = "SwiftyLocalReceiptValidator::SwiftyLocalReceiptValidator::Product" /* SwiftyLocalReceiptValidator.framework */;
@@ -140,7 +137,6 @@
 			);
 			mainGroup = OBJ_5;
 			packageReferences = (
-				2F2CB0DF2515FFF90030844D /* XCRemoteSwiftPackageReference "OpenSSL" */,
 			);
 			productRefGroup = OBJ_15 /* Products */;
 			projectDirPath = "";
@@ -342,11 +338,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2F2CB0E02515FFF90030844D /* OpenSSL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2F2CB0DF2515FFF90030844D /* XCRemoteSwiftPackageReference "OpenSSL" */;
-			productName = OpenSSL;
-		};
 		2FAFD5B425184AE100591EBD /* OpenSSL */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2F2CB0DF2515FFF90030844D /* XCRemoteSwiftPackageReference "OpenSSL" */;
