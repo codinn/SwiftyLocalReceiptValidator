@@ -12,19 +12,20 @@ let package = Package(
             targets: ["SwiftyLocalReceiptValidator"])
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
+        .package(url: "https://github.com/codinn/openssl-apple.git", .branch("compact")),
+        .package(url: "https://github.com/codinn/OpenSSL.git", .branch("master"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "pkcs7_union_accessors",
+            dependencies: ["openssl-apple"],
             path: "Sources/pkcs7_union_accessors",
-            exclude: ["include2"],
             publicHeadersPath: "./"),
         .target(
             name: "SwiftyLocalReceiptValidator",
-            dependencies: ["pkcs7_union_accessors"],
+            dependencies: ["pkcs7_union_accessors", "OpenSSL", "openssl-apple"],
             path: "Sources/SwiftyLocalReceiptValidator")
     ]
 )

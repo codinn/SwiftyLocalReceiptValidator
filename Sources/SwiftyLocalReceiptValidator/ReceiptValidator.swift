@@ -34,6 +34,8 @@
 
 import Foundation
 import StoreKit
+import OpenSSL
+import pkcs7_union_accessors
 #if os(macOS)
 import IOKit
 #endif
